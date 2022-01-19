@@ -29,7 +29,6 @@ export default {
   methods: {
     getSearch(value) {
       this.filmList = value;
-      console.log(this.filmList);
     },
 
   }

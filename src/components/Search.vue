@@ -25,6 +25,13 @@ export default {
             axios.get(this.apiQuery+this.searchText)
                 .then(res => {
                     this.filmList = res.data.results;
+                    // this.filmList.forEach(el => {
+
+                    //     if(el.original_language == "it") {
+                    //         el.original_language = "../assets/img/italy.png";
+                    //     }
+                    // });
+
                     this.$emit("sendSearch", this.filmList);
 
                 })
