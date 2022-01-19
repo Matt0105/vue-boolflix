@@ -22,13 +22,18 @@ export default {
 
   data() {
     return {
-      filmList: [],
+      filmList: {
+        film: [],
+        series: []
+      },
     }
   },
 
   methods: {
     getSearch(value) {
+
       this.filmList = value;
+      console.log(this.filmList);
     },
 
   }

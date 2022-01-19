@@ -1,13 +1,14 @@
 <template>
   <div class="card-container">
       <ul>
-          <li>{{filmInfo.title}}</li>
-          <li>{{filmInfo.original_title}}</li>
+          <li>{{title}}</li>
+          <li>{{originalTitle}}</li>
           <li><img :src="getImgUrl()" alt=""></li>
-          <li>{{filmInfo.vote_average}}</li>
+          <li>{{vote}}</li>
           <!-- <li><img :src="basicImageURL + filmInfo.poster_path" alt=""></li> -->
       </ul>
   </div>
+
 </template>
 
 <script>
@@ -19,11 +20,14 @@ export default {
         }
     },
     props: {
-        filmInfo: Object,
+        title: String,
+        originalTitle: String,
+        language: String,
+        vote: Number
     },
     methods: {
         getImgUrl() {
-            switch (this.filmInfo.original_language) {
+            switch (this.language) {
                 case "it":
                     return require("../assets/img/italy.png");
 

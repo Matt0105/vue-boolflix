@@ -17,14 +17,19 @@ export default {
 
     data() {
         return {
-            filmList: [],
+            filmList: {
+                film: [],
+                series: []
+            },
         }
     },
 
     methods: {
         setSearch(value) {
+            // console.log(value.series);
+            // this.filmList.film = value.film;
+            // this.filmList.series = value.series;
             this.filmList = value;
-
             this.sendSearch();
         },
 

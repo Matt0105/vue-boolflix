@@ -13,26 +13,32 @@ export default {
 
     data() {
         return {
-            apiQuery: "https://api.themoviedb.org/3/search/movie?api_key=209546ea776ec96053d1a5aabf76772f&query=",
+            filmApiQuery: "https://api.themoviedb.org/3/search/movie?api_key=209546ea776ec96053d1a5aabf76772f&query=",
+            seriesApiQuery: "https://api.themoviedb.org/3/search/tv?api_key=209546ea776ec96053d1a5aabf76772f&query=",
             searchText: "",
-            filmList: [],
+            filmList: {
+                film: [],
+                series: []
+            },
         }
     },
 
     methods: {
         sendInput() {
 
-            axios.get(this.apiQuery+this.searchText)
+            axios.get(this.filmApiQuery+this.searchText)       //prima chiamata: film
                 .then(res => {
-                    this.filmList = res.data.results;
-                    // this.filmList.forEach(el => {
+                    this.filmList.film = res.data.results;
 
-                    //     if(el.original_language == "it") {
-                    //         el.original_language = "../assets/img/italy.png";
-                    //     }
-                    // });
+                    axios.get(this.seriesApiQuery+this.searchText)  //seconda chiamata: serie TV
+                        .then(res => {
+                            this.filmList.series = res.data.results;
 
-                    this.$emit("sendSearch", this.filmList);
+                            this.$emit("sendSearch", this.filmList);
+
+                        })
+                        .catch(err => console.log(err))
+
 
                 })
                 .catch(err => console.log(err))

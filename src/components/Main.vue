@@ -1,18 +1,28 @@
 <template>
   <main>
-    <FilmCard 
-        v-for="(film, index) in arrayFilms"
-        :key=index
-        :filmInfo="film"
-    />
-      <!--  
-            backdrop_path: (...)  immagine
-            original_title: (...)
-            overview: (...)
-            poster_path: (...)
-            release_date: (...)
-            title: (...)
-            vote_average: (...) -->
+    <div v-if="arrayFilms.film" class="films-container">
+        <FilmCard 
+            v-for="(film, index) in arrayFilms.film"
+            :key=index+film.id
+            :title="film.title"
+            :originalTitle="film.original_title"
+            :language="film.original_language"
+            :vote="film.vote_average"
+        />
+    </div>
+    
+    <div v-if="arrayFilms.series" class="series-container">
+        <FilmCard 
+            v-for="(serie, index) in arrayFilms.series"
+            :key=index+serie.id
+            :title="serie.name"
+            :originalTitle="serie.original_name"
+            :language="serie.original_language"
+            :vote="serie.vote_average"
+        />
+    </div>
+    
+    
   </main>
 </template>
 
@@ -26,7 +36,7 @@ export default {
         FilmCard,
     },
     props: {
-        arrayFilms: Array,
+        arrayFilms: Object,  //arrayFilms è un oggetto che contiene un array per i film e un array per le serie tv
     },
 
     data() {
