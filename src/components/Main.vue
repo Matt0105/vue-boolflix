@@ -8,6 +8,7 @@
             :originalTitle="film.original_title"
             :language="film.original_language"
             :vote="film.vote_average"
+            :poster="film.poster_path"
         />
     </div>
     
@@ -19,6 +20,7 @@
             :originalTitle="serie.original_name"
             :language="serie.original_language"
             :vote="serie.vote_average"
+            :poster="serie.poster_path"
         />
     </div>
     

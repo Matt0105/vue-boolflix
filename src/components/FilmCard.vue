@@ -4,8 +4,8 @@
           <li>{{title}}</li>
           <li>{{originalTitle}}</li>
           <li><img :src="getImgUrl()" alt=""></li>
-          <li>{{vote}}</li>
-          <!-- <li><img :src="basicImageURL + filmInfo.poster_path" alt=""></li> -->
+          <li>{{getNewVote(vote)}}</li>
+          <li><img :src="basicImageURL + poster" alt=""></li>
       </ul>
   </div>
 
@@ -16,14 +16,15 @@ export default {
     name: "FilmCard",
     data() {
         return {
-            basicImageURL: "https://image.tmdb.org/t/p/original",   
+            basicImageURL: "https://image.tmdb.org/t/p/w342",   
         }
     },
     props: {
         title: String,
         originalTitle: String,
         language: String,
-        vote: Number
+        vote: Number,
+        poster: String
     },
     methods: {
         getImgUrl() {
@@ -70,7 +71,12 @@ export default {
                 default:
                     return require("../assets/img/No_flag.svg");
             }
+        },
 
+        getNewVote(value) {
+            if(value != 0) {
+                return Math.ceil(((Math.ceil(value)*5)/10));
+            }
             
         }
     }
