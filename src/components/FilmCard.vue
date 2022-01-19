@@ -6,12 +6,23 @@
           <li><img :src="getImgUrl()" alt=""></li>
           <li>{{getNewVote(vote)}}</li>
           <li><img :src="basicImageURL + poster" alt=""></li>
+          <li>
+              <i 
+              v-for="(star, index) in getNewVote(vote)"
+              :key=index
+              class="fa-solid fa-star"></i>
+              <!-- stella da inserire con npm  -->
+          </li> 
+
       </ul>
   </div>
 
 </template>
 
 <script>
+
+
+
 export default {
     name: "FilmCard",
     data() {
