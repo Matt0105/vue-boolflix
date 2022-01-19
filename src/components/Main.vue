@@ -1,12 +1,10 @@
 <template>
   <main>
-      <ul v-for="(film, index) in arrayFilms" :key=index>
-          <li>{{film.title}}</li>
-          <li>{{film.original_title}}</li>
-          <li>{{film.original_language}}</li>
-          <li>{{film.vote_average}}</li>
-      </ul>
-
+    <FilmCard 
+        v-for="(film, index) in arrayFilms"
+        :key=index
+        :filmInfo="film"
+    />
       <!--  
             backdrop_path: (...)  immagine
             original_title: (...)
@@ -20,8 +18,13 @@
 
 <script>
 // 209546ea776ec96053d1a5aabf76772f  myApi KEY
+import FilmCard from './FilmCard.vue';
+
 export default {
     name: "Main",
+    components: {
+        FilmCard,
+    },
     props: {
         arrayFilms: Array,
     },
