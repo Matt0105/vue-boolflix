@@ -4,7 +4,7 @@
       @sendToApp="getSearch($event)"
     />
     <Main 
-      :input="inputSearch"
+      :arrayFilms="filmList"
     />
   </div>
 </template>
@@ -22,13 +22,14 @@ export default {
 
   data() {
     return {
-      inputSearch: "",
+      filmList: [],
     }
   },
 
   methods: {
     getSearch(value) {
-      this.inputSearch = value;
+      this.filmList = value;
+      console.log(this.filmList);
     },
 
   }

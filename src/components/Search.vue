@@ -6,18 +6,30 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     name: "Search",
 
     data() {
         return {
+            apiQuery: "https://api.themoviedb.org/3/search/movie?api_key=209546ea776ec96053d1a5aabf76772f&query=",
             searchText: "",
+            filmList: [],
         }
     },
 
     methods: {
         sendInput() {
-            this.$emit("sendSearch", this.searchText);
+
+            axios.get(this.apiQuery+this.searchText)
+                .then(res => {
+                    this.filmList = res.data.results;
+                    this.$emit("sendSearch", this.filmList);
+
+                })
+                .catch(err => console.log(err))
+
         }
     }
 

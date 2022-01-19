@@ -17,22 +17,19 @@ export default {
 
     data() {
         return {
-            inputSearch: "",
+            filmList: [],
         }
     },
 
     methods: {
         setSearch(value) {
-            this.inputSearch = value;
-
-            console.log(value);
-            console.log(this.inputSearch);
+            this.filmList = value;
 
             this.sendSearch();
         },
 
         sendSearch() {
-            this.$emit("sendToApp", this.inputSearch);
+            this.$emit("sendToApp", this.filmList);
         }
 
     }
