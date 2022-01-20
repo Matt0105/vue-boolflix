@@ -1,19 +1,22 @@
 <template>
   <div class="card-container">
-      <ul>
-          <li>{{title}}</li>
-          <li>{{originalTitle}}</li>
-          <li><img :src="getImgUrl()" alt=""></li>
-          <li><img :src="basicImageURL + poster" alt=""></li>
-          <li>
-              <i 
-              v-for="(star, index) in getNewVote(vote)"
-              :key=index
-              class="fa-solid fa-star"></i>
-              <!-- stella da inserire con npm  -->
-          </li> 
+        <li><img :src="basicImageURL + poster" alt=""></li>
+        <div class="info-container">
+            <li class="film-info"> <span class="label">Titolo: </span> {{title}}</li>
+            <li class="film-info"><span class="label">Titolo originale: </span> {{originalTitle}}</li>
+            <li class="film-info"><span class="label">Lingua originale: </span> <img class="flag" :src="getImgUrl()" alt=""></li>
+            <li class="film-info">
+                <span class="label">Voto: </span>
+                <i 
+                v-for="(star, index) in getNewVote(vote)"
+                :key=index
+                class="fa-solid fa-star rate"></i>
+                <!-- stella da inserire con npm  -->
+            </li>
+            <li class="film-info"> <span class="label">Descrizione: </span> {{overview}}</li>
 
-      </ul>
+        </div>
+        
   </div>
 
 </template>
@@ -34,7 +37,8 @@ export default {
         originalTitle: String,
         language: String,
         vote: Number,
-        poster: String
+        poster: String,
+        overview: String
     },
     methods: {
         getImgUrl() {
@@ -95,4 +99,29 @@ export default {
 
 <style lang="scss" scoped>
 
+    .card-container {
+        width: 342px;  //larghezza dell'immagine richiesta all'API
+        position: relative;
+
+        li {
+            margin: 0.4rem 0;
+        }
+
+        .info-container {
+            position: absolute;
+            top: 1rem;
+            left: 0.7rem;
+            color: white;
+            display: none;
+
+            .label {
+                text-transform: uppercase;
+                font-size: 1rem;
+                font-weight: bold;
+            }
+            .rate {
+                color: rgb(243, 221, 26);
+            }
+        }
+    }
 </style>

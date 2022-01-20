@@ -48,6 +48,9 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 
     header {
+        position: absolute;
+        top: 0;
+        left: 0;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -55,6 +58,7 @@ export default {
         height: 70px;
         background-color: rgba(0,0,0,0.8);
         padding: 0 1rem;
+        position: sticky;
         h1 {
             color: $n-red;
             font-size: 3.5rem;

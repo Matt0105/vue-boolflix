@@ -10,6 +10,7 @@
                 :language="film.original_language"
                 :vote="film.vote_average"
                 :poster="film.poster_path"
+                :overview="film.overview.length > 0 ? film.overview : 'No Description'"
             />
         </ul>
         

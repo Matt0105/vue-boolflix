@@ -1,0 +1,5 @@
+@mixin hideScroll {
+    display: none;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
