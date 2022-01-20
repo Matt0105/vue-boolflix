@@ -1,9 +1,12 @@
 <template>
   <header>
-      <h1>Boolflix</h1>
-      <Search 
-        @sendSearch="setSearch($event)"
-      />
+      <div class="header-container">
+        <h1>Boolflix</h1>
+        <Search 
+            @sendSearch="setSearch($event)"
+        />
+      </div>
+      
   </header>
 </template>
 
@@ -20,16 +23,14 @@ export default {
         return {
             filmList: {
                 film: [],
-                series: []
+                series: [],
+                firstSearch: true
             },
         }
     },
 
     methods: {
         setSearch(value) {
-            // console.log(value.series);
-            // this.filmList.film = value.film;
-            // this.filmList.series = value.series;
             this.filmList = value;
             this.sendSearch();
         },
@@ -51,20 +52,27 @@ export default {
         position: absolute;
         top: 0;
         left: 0;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        height: 70px;
         background-color: rgba(0,0,0,0.8);
-        padding: 0 1rem;
         position: sticky;
-        h1 {
-            color: $n-red;
-            font-size: 3.5rem;
-            font-family: 'Bebas Neue', cursive;
-            letter-spacing: 3px;
+        z-index: 100;
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: auto;
+            width: 90%;
+            height: 70px;
+
+            h1 {
+                color: $n-red;
+                font-size: 3.5rem;
+                font-family: 'Bebas Neue', cursive;
+                letter-spacing: 3px;
+            }
         }
+
+        
     }
 
 </style>

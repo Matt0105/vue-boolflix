@@ -1,6 +1,10 @@
 <template>
   <div class="card-container">
-        <li><img :src="basicImageURL + poster" alt=""></li>
+        <li>
+            <img v-if="poster" class="poster" :src="basicImageURL + poster" alt="">
+            <img v-else class="no-poster" src="../assets/img/noPoster.jpeg" alt="">
+        </li>
+        <!-- <li><img class="poster" :src="basicImageURL + poster" alt=""></li> -->
         <div class="info-container">
             <li class="film-info"> <span class="label">Titolo: </span> {{title}}</li>
             <li class="film-info"><span class="label">Titolo originale: </span> {{originalTitle}}</li>
@@ -13,7 +17,7 @@
                 class="fa-solid fa-star rate"></i>
                 <!-- stella da inserire con npm  -->
             </li>
-            <li class="film-info"> <span class="label">Descrizione: </span> {{overview}}</li>
+            <li class="film-info"> <span class="label">Descrizione: </span> <p>{{overview}}</p></li>
 
         </div>
         
@@ -91,20 +95,72 @@ export default {
             if(value != 0) {
                 return Math.ceil(((Math.ceil(value)*5)/10));
             }
+            else {
+                return 1;
+            }
             
-        }
+        },
+
     }
 }
 </script>
 
 <style lang="scss" scoped>
+@import "../assets/scss/partials/_mixins.scss";
 
     .card-container {
-        width: 342px;  //larghezza dell'immagine richiesta all'API
+        width: calc(100% / 4 - 1.5rem);
+        max-height: 60vh;
         position: relative;
+        overflow: hidden;
+        transition: all 0.2s;
+
+        &:hover {
+            outline: 3px solid white;
+            outline-offset: 7px;
+            cursor: pointer;
+        }
+
+        &:hover .poster {
+            transform: rotate3d(0, 1, 0, 180deg);
+            filter: brightness(30%);
+        }
+        &:hover .no-poster {
+            transform: rotate3d(0, 1, 0, 180deg);
+            filter: brightness(30%);
+        }
+
+        &:hover .info-container {
+            opacity: 1;
+        }
 
         li {
+            height: 100%;
+        }
+        .poster {
+            width: 100%;
+            height: 100%;
+            transition: all 0.5s;
+        }
+        .no-poster {
+            width: 100%;
+            height: 100%;
+            transition: all 0.5s;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        li.film-info {
             margin: 0.4rem 0;
+
+            p {
+                height: 20vh;
+                overflow: scroll;
+                margin-top: 5px;
+            }
+            p::-webkit-scrollbar {
+                @include hideScroll;
+            }
         }
 
         .info-container {
@@ -112,7 +168,9 @@ export default {
             top: 1rem;
             left: 0.7rem;
             color: white;
-            display: none;
+            opacity: 0;
+
+            transition: all 1.3s;
 
             .label {
                 text-transform: uppercase;

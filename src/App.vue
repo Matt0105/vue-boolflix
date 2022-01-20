@@ -24,7 +24,8 @@ export default {
     return {
       filmList: {
         film: [],
-        series: []
+        series: [],
+        firstSearch: true
       },
     }
   },

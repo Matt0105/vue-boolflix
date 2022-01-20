@@ -18,7 +18,8 @@ export default {
             searchText: "",
             filmList: {
                 film: [],
-                series: []
+                series: [],
+                firstSearch: true
             },
         }
     },
@@ -26,8 +27,12 @@ export default {
     methods: {
         sendInput() {
 
-            axios.get(this.filmApiQuery+this.searchText)       //prima chiamata: film
+            if(this.searchText.trim() != "") {
+                axios.get(this.filmApiQuery+this.searchText)       //prima chiamata: film
                 .then(res => {
+                    
+                    this.filmList.firstSearch = false;
+
                     this.filmList.film = res.data.results;
 
                     axios.get(this.seriesApiQuery+this.searchText)  //seconda chiamata: serie TV
@@ -40,6 +45,16 @@ export default {
                         .catch(err => console.log(err))
                 })
                 .catch(err => console.log(err))
+            }
+            else {
+                this.filmList = {
+                    film: [],
+                    series: [],
+                    firstSearch: true
+                };
+
+                this.$emit("sendSearch", this.filmList);
+            }
 
         }
     }
