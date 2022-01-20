@@ -1,6 +1,6 @@
 <template>
   <div class="search-container">
-      <input type="text" v-model="searchText">
+      <input @keyup.enter="sendInput()" type="text" v-model="searchText">
       <button @click="sendInput()">Cerca</button>
   </div>
 </template>
@@ -38,8 +38,6 @@ export default {
 
                         })
                         .catch(err => console.log(err))
-
-
                 })
                 .catch(err => console.log(err))
 
@@ -49,6 +47,36 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+@import "../assets/scss/partials/_variables.scss";
+
+    .search-container {
+        display: flex;
+        align-items: center;
+        height: 100%;
+
+
+        input {
+            width: 300px;
+            height: 40%;
+            background-color: rgba(0,0,0,0);
+            border: 1px solid white;
+            outline: none;
+            color: white;
+            padding: 0 1rem;
+        }
+
+        button {
+            height: 40%;
+            border: none;
+            background-color: $n-red;
+            text-transform: uppercase;
+            color: white;
+            font-size: 0.8rem;
+            cursor: pointer;
+            padding: 5px;
+            margin-left: 5px;
+        }
+    }
 
 </style>

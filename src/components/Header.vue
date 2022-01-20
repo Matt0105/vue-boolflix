@@ -1,5 +1,6 @@
 <template>
   <header>
+      <h1>Boolflix</h1>
       <Search 
         @sendSearch="setSearch($event)"
       />
@@ -42,11 +43,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../assets/scss/partials/_variables.scss";
+@import "../assets/scss/partials/_commons.scss";
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 
     header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         width: 100%;
-        height: 80px;
-        border-bottom: 1px solid black;
+        height: 70px;
+        background-color: rgba(0,0,0,0.8);
+        padding: 0 1rem;
+        h1 {
+            color: $n-red;
+            font-size: 3.5rem;
+            font-family: 'Bebas Neue', cursive;
+            letter-spacing: 3px;
+        }
     }
 
 </style>

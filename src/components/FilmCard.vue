@@ -4,7 +4,6 @@
           <li>{{title}}</li>
           <li>{{originalTitle}}</li>
           <li><img :src="getImgUrl()" alt=""></li>
-          <li>{{getNewVote(vote)}}</li>
           <li><img :src="basicImageURL + poster" alt=""></li>
           <li>
               <i 
