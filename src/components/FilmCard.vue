@@ -19,6 +19,8 @@
             </li>
             <li class="film-info"> <span class="label">Descrizione: </span> <p>{{overview}}</p></li>
 
+            <button @click="learnMore()">Scopri ></button>
+
         </div>
         
   </div>
@@ -27,13 +29,17 @@
 
 <script>
 
-
+import axios from "axios";
 
 export default {
     name: "FilmCard",
     data() {
         return {
-            basicImageURL: "https://image.tmdb.org/t/p/w342",   
+            basicImageURL: "https://image.tmdb.org/t/p/w342",
+            baseUrl: "https://api.themoviedb.org/3/", // [movie] or [tv] / [id] / credits ? apiKey   
+            apiKey: "209546ea776ec96053d1a5aabf76772f",
+            castName: [],
+            genres: []
         }
     },
     props: {
@@ -42,7 +48,10 @@ export default {
         language: String,
         vote: Number,
         poster: String,
-        overview: String
+        overview: String,
+        id: Number,
+        type: String,
+        filmGenres: Array
     },
     methods: {
         getImgUrl() {
@@ -100,6 +109,39 @@ export default {
             }
             
         },
+
+        learnMore() {
+            //https://api.themoviedb.org/3/movie/550/credits?api_key=209546ea776ec96053d1a5aabf76772f
+            axios.get(`${this.baseUrl}${this.type}/${this.id}/credits?api_key=${this.apiKey}`)
+                .then(res => {
+                    const castList = res.data.cast;
+
+                    for(let i = 0; i < 5; i++) {
+                        this.castName.push(castList[i].name);
+                    }
+
+                    // console.log(this.castName);         //potrebbero non esserci attori (cartoni animati)
+                })
+                .catch(err => console.log(err));
+
+
+            axios.get(`${this.baseUrl}/genre/${this.type}/list?api_key=${this.apiKey}`)
+                .then(res => {
+                    this.genres = res.data.genres;
+
+                    for(let y=0; y < this.filmGenres.length; y++) {             //ciclo annidato: controllo con indice y l'id corrente del film se è presente nella lista generi (i)
+
+                        for(let i=0; i < this.genres.length; i++) {
+                            if(this.genres[i].id == this.filmGenres[y]) {
+                                this.filmGenres[y] = this.genres[i].name;
+                            }
+                        }
+                    }
+
+                })
+                .catch(err => console.log(err));
+
+        }
 
     }
 }
@@ -180,6 +222,12 @@ export default {
             .rate {
                 color: rgb(243, 221, 26);
             }
+        }
+
+        button {
+            position: relative;
+            background-color: white;
+            z-index: 101;
         }
     }
 </style>

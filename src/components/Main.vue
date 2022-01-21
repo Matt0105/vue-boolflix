@@ -15,6 +15,9 @@
                     :vote="film.vote_average"
                     :poster="film.poster_path"
                     :overview="film.overview.length > 0 ? film.overview : 'No Description'"
+                    :id="film.id"
+                    :type="`movie`"
+                    :filmGenres="film.genre_ids"
                 />
             </ul>
         </div>
@@ -36,6 +39,9 @@
                     :vote="serie.vote_average"
                     :poster="serie.poster_path"
                     :overview="serie.overview.length > 0 ? serie.overview : 'No Description'"
+                    :id="serie.id"
+                    :type="`tv`"
+                    :filmGenres="serie.genre_ids"
                 />
             </ul>
         </div>
