@@ -1,5 +1,5 @@
 <template>
-  <div v-if="filmGenres.includes(genreChoice)" @mouseover="learnMore()" class="card-container">
+  <div v-if="filmGenres.includes(genreChoice) || genreChoice == null" @mouseover="learnMore()" class="card-container">
         <li>
             <img v-if="poster" class="poster" :src="basicImageURL + poster" alt="">
             <img v-else class="no-poster" src="../assets/img/noPoster.jpeg" alt="">
@@ -49,7 +49,7 @@
             </transition>
 
         </div>
-        <button @click="test() ,learnMoreClick = !learnMoreClick">Scopri di più ></button>
+        <button @click="learnMoreClick = !learnMoreClick">Scopri di più ></button>
         
   </div>
 
@@ -132,10 +132,6 @@ export default {
             }
         },
 
-        test() {
-            console.log(this.filmGenresName);
-        },
-
         getNewVote(value) {
             if(value != 0) {
                 return Math.ceil(((Math.ceil(value)*5)/10));
@@ -146,15 +142,13 @@ export default {
             
         },
 
-        learnMore() {  //si potrebbe fare nel Search all'inizio, quando popolo l'oggetto così è più veloce la visualizzazione
+        learnMore() { 
 
             if(this.castName.length == 0) {
 
                 axios.get(`${this.baseUrl}/genre/${this.type}/list?api_key=${this.apiKey}`)
                     .then(res => {
                         this.genres = res.data.genres;
-                        console.log(this.genres);
-                        // console.log(this.genres);
                         this.transformIdGenres();
 
                     })
@@ -171,8 +165,6 @@ export default {
                         for(let i = 0; i < 5; i++) {
                             this.castName.push(castList[i].name);
                         }
-
-                        // console.log(this.castName);         //potrebbero non esserci attori (cartoni animati)
                     })
                     .catch(err => console.log(err));
 
@@ -216,7 +208,7 @@ export default {
 
         &:hover {
             outline: 3px solid white;
-            outline-offset: 7px;
+            outline-offset: 10px;
             cursor: pointer;
         }
 

@@ -3,7 +3,7 @@
     <div class="main-container">
         <div v-if="arrayFilms.film.length > 0" class="films-container">
 
-            <h2 class="section" v-if="arrayFilms.film">Film</h2>
+            <h2 @click="test()" class="section" v-if="arrayFilms.film">Film</h2>
 
             <ul>
                 <FilmCard 
@@ -81,6 +81,13 @@ export default {
         }
     },
 
+    methods: {
+        test() {
+            // && arrayFilms.genre_ids.includes(choice)
+            console.log(this.arrayFilms.film);
+        }
+    },
+
     computed: {
 
     }
@@ -101,7 +108,7 @@ export default {
                 display: flex;
                 flex-wrap: wrap;
                 margin: 1rem 0 4rem 0;
-                gap: 1.5rem;
+                gap: 2rem;
             }
         }
 

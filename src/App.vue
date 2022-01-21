@@ -37,12 +37,10 @@ export default {
     getSearch(value) {
 
       this.filmList = value;
-      console.log(this.filmList);
     },
 
     getChoice(value) {
       this.idGenreChoiced = value;
-      console.log(this.idGenreChoiced);
     }
   }
 };

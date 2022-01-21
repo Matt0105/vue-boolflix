@@ -2,18 +2,21 @@
   <header>
       <div class="header-container">
         <h1>Boolflix</h1>
-        <Search 
-            @sendSearch="setSearch($event)"
-        />
-
-        <select name="genre" id="genre" v-model="genreChoiced" @change="transformIntoId()">
-            <option value="all">All</option>
+        
+        <select name="genre" id="genre" v-model="genreChoiced" @change="transformIntoId() ">
+            <option value="default" disabled selected="selected">Select Genre</option>
+            <option value="all" selected="selected">All</option>
             <option 
                 v-for="(genre, index) in genresName"
                 :key="index"
                 :value="genre">{{genre}}
             </option>
         </select>
+        
+        <Search 
+            @sendSearch="setSearch($event)"
+        />
+
       </div>
       
   </header>
@@ -48,11 +51,7 @@ export default {
                             }
                         }
 
-                        console.log(this.genreList);
-
                         this.transformIdGenres(this.genreList);
-
-                        console.log(this.genresList);
 
                     })
                     .catch(err => console.log(err));
@@ -71,7 +70,7 @@ export default {
             },
             genreList: [],
             genresName: [],
-            genreChoiced: "All",
+            genreChoiced: "default",
             idGenreChoiced: null,
             baseUrl: "https://api.themoviedb.org/3/", // [movie] or [tv] / [id] / credits ? apiKey   
             apiKey: "209546ea776ec96053d1a5aabf76772f",
@@ -100,6 +99,9 @@ export default {
         },
 
         sendChoice() {
+            if(this.genreChoiced == "all") {
+                this.idGenreChoiced = null;
+            }
             this.$emit("sendGenre", this.idGenreChoiced);
         },
 
@@ -139,6 +141,16 @@ export default {
             margin: auto;
             width: 90%;
             height: 70px;
+
+            select {
+                width: 200px;
+                height: 40%;
+                background-color: rgba(0,0,0,0);
+                border: 1px solid white;
+                outline: none;
+                color: white;
+                padding: 0 1rem;
+            }
 
             h1 {
                 color: $n-red;
