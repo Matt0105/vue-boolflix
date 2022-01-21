@@ -1,5 +1,5 @@
 <template>
-  <div v-if="filmGenres.includes(genreChoice)" class="card-container">
+  <div v-if="filmGenres.includes(genreChoice)" @mouseover="learnMore()" class="card-container">
         <li>
             <img v-if="poster" class="poster" :src="basicImageURL + poster" alt="">
             <img v-else class="no-poster" src="../assets/img/noPoster.jpeg" alt="">
@@ -40,7 +40,7 @@
                 <li v-if="learnMoreClick" class="film-info" key=2> 
                     <span class="label">Generi Correlati: </span>
                     <p 
-                        v-for="(genre, index) in filmGenres"
+                        v-for="(genre, index) in filmGenresName"
                         :key="index"
                         >
                         {{genre}}
@@ -49,7 +49,7 @@
             </transition>
 
         </div>
-        <button @click="learnMore(), learnMoreClick = !learnMoreClick">Scopri di più ></button>
+        <button @click="test() ,learnMoreClick = !learnMoreClick">Scopri di più ></button>
         
   </div>
 
@@ -68,7 +68,8 @@ export default {
             apiKey: "209546ea776ec96053d1a5aabf76772f",
             castName: [],
             genres: [],
-            learnMoreClick: false
+            learnMoreClick: false,
+            filmGenresName: []
         }
     },
     props: {
@@ -131,7 +132,9 @@ export default {
             }
         },
 
-        
+        test() {
+            console.log(this.filmGenresName);
+        },
 
         getNewVote(value) {
             if(value != 0) {
@@ -146,10 +149,24 @@ export default {
         learnMore() {  //si potrebbe fare nel Search all'inizio, quando popolo l'oggetto così è più veloce la visualizzazione
 
             if(this.castName.length == 0) {
+
+                axios.get(`${this.baseUrl}/genre/${this.type}/list?api_key=${this.apiKey}`)
+                    .then(res => {
+                        this.genres = res.data.genres;
+                        console.log(this.genres);
+                        // console.log(this.genres);
+                        this.transformIdGenres();
+
+                    })
+                    .catch(err => console.log(err));
+
+
                 //https://api.themoviedb.org/3/movie/550/credits?api_key=209546ea776ec96053d1a5aabf76772f
                 axios.get(`${this.baseUrl}${this.type}/${this.id}/credits?api_key=${this.apiKey}`)
                     .then(res => {
                         const castList = res.data.cast;
+
+                        this.castName = [];
 
                         for(let i = 0; i < 5; i++) {
                             this.castName.push(castList[i].name);
@@ -160,26 +177,20 @@ export default {
                     .catch(err => console.log(err));
 
 
-                axios.get(`${this.baseUrl}/genre/${this.type}/list?api_key=${this.apiKey}`)
-                    .then(res => {
-                        this.genres = res.data.genres;
-
-                        // console.log(this.genres);
-                        this.transformIdGenres();
-
-                    })
-                    .catch(err => console.log(err));
+                
             }
         
         },
 
         transformIdGenres() {
-
+            this.filmGenresName = [];
             for(let y=0; y < this.filmGenres.length; y++) {             //ciclo annidato: controllo con indice y l'id corrente del film se è presente nella lista generi (i)
 
                 for(let i=0; i < this.genres.length; i++) {
                     if(this.genres[i].id == this.filmGenres[y]) {
-                        this.filmGenres[y] = this.genres[i].name;
+                        // this.filmGenres[y] = this.genres[i].name;
+                        this.filmGenresName.push(this.genres[i].name);
+
                     }
                 }
             }

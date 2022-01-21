@@ -39,7 +39,17 @@ export default {
                         let tvGenres = res.data.genres;
 
                         this.genreList.push(...tvGenres);
+
+                        for(let i=0; i < this.genreList.length; i++) {
+                            for(let y=i+1; y < this.genreList.length; y++) {
+                                if(this.genreList[i].id == this.genreList[y].id) {                  //ciclo annidato per eliminare i doppioni
+                                    this.genreList.splice(i, 1);
+                                }
+                            }
+                        }
+
                         console.log(this.genreList);
+
                         this.transformIdGenres(this.genreList);
 
                         console.log(this.genresList);
@@ -61,7 +71,7 @@ export default {
             },
             genreList: [],
             genresName: [],
-            genreChoiced: "",
+            genreChoiced: "All",
             idGenreChoiced: null,
             baseUrl: "https://api.themoviedb.org/3/", // [movie] or [tv] / [id] / credits ? apiKey   
             apiKey: "209546ea776ec96053d1a5aabf76772f",
