@@ -5,6 +5,15 @@
         <Search 
             @sendSearch="setSearch($event)"
         />
+
+        <select name="genre" id="genre" v-model="genreChoiced" @change="transformIntoId()">
+            <option value="all">All</option>
+            <option 
+                v-for="(genre, index) in genresName"
+                :key="index"
+                :value="genre">{{genre}}
+            </option>
+        </select>
       </div>
       
   </header>
@@ -12,11 +21,35 @@
 
 <script>
 import Search from './Search.vue';
+import axios from "axios";
 
 export default {
     name: "Header",
     components: {
         Search,
+    },
+
+    created() {
+        axios.get(`${this.baseUrl}/genre/movie/list?api_key=${this.apiKey}`)
+            .then(res => {
+                this.genreList = res.data.genres;
+
+                axios.get(`${this.baseUrl}/genre/tv/list?api_key=${this.apiKey}`)
+                    .then(res => {
+                        let tvGenres = res.data.genres;
+
+                        this.genreList.push(...tvGenres);
+                        console.log(this.genreList);
+                        this.transformIdGenres(this.genreList);
+
+                        console.log(this.genresList);
+
+                    })
+                    .catch(err => console.log(err));
+
+
+            })
+            .catch(err => console.log(err));
     },
 
     data() {
@@ -26,7 +59,17 @@ export default {
                 series: [],
                 firstSearch: true
             },
+            genreList: [],
+            genresName: [],
+            genreChoiced: "",
+            idGenreChoiced: null,
+            baseUrl: "https://api.themoviedb.org/3/", // [movie] or [tv] / [id] / credits ? apiKey   
+            apiKey: "209546ea776ec96053d1a5aabf76772f",
         }
+    },
+
+    computed: {
+        
     },
 
     methods: {
@@ -37,6 +80,29 @@ export default {
 
         sendSearch() {
             this.$emit("sendToApp", this.filmList);
+        },
+
+        transformIdGenres(value) {
+                for(let i=0; i < value.length; i++) {
+                    this.genresName.push(this.genreList[i].name); 
+                }
+            
+        },
+
+        sendChoice() {
+            this.$emit("sendGenre", this.idGenreChoiced);
+        },
+
+        transformIntoId() {
+            
+            this.genreList.forEach(el => {
+
+                if(el.name == this.genreChoiced) {
+                    this.idGenreChoiced = el.id;
+                }
+            });
+
+            this.sendChoice();
         }
 
     }

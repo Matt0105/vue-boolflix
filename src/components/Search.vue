@@ -56,7 +56,8 @@ export default {
                 this.$emit("sendSearch", this.filmList);
             }
 
-        }
+        },
+        
     }
 
 }

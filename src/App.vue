@@ -2,9 +2,11 @@
   <div id="app">
     <Header 
       @sendToApp="getSearch($event)"
+      @sendGenre="getChoice($event)"
     />
     <Main 
       :arrayFilms="filmList"
+      :choice="idGenreChoiced"
     />
   </div>
 </template>
@@ -27,6 +29,7 @@ export default {
         series: [],
         firstSearch: true
       },
+      idGenreChoiced: null,
     }
   },
 
@@ -37,6 +40,10 @@ export default {
       console.log(this.filmList);
     },
 
+    getChoice(value) {
+      this.idGenreChoiced = value;
+      console.log(this.idGenreChoiced);
+    }
   }
 };
 </script>

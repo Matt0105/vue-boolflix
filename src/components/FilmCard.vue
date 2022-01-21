@@ -1,12 +1,11 @@
 <template>
-  <div class="card-container">
+  <div v-if="filmGenres.includes(genreChoice)" class="card-container">
         <li>
             <img v-if="poster" class="poster" :src="basicImageURL + poster" alt="">
             <img v-else class="no-poster" src="../assets/img/noPoster.jpeg" alt="">
         </li>
-        <!-- <li><img class="poster" :src="basicImageURL + poster" alt=""></li> -->
         <div class="info-container">
-            <li class="film-info"> <span class="label">Titolo: </span> {{title}}</li>
+            <li class="film-info"> <span class="label">Titolo: </span> {{title}} {{genreChoice}}</li>
             <li class="film-info"><span class="label">Titolo originale: </span> {{originalTitle}}</li>
             <li class="film-info"><span class="label">Lingua originale: </span> <img class="flag" :src="getImgUrl()" alt=""></li>
             <li class="film-info">
@@ -81,7 +80,8 @@ export default {
         overview: String,
         id: Number,
         type: String,
-        filmGenres: Array
+        filmGenres: Array,
+        genreChoice: Number
     },
 
     methods: {
@@ -143,7 +143,7 @@ export default {
             
         },
 
-        learnMore() {
+        learnMore() {  //si potrebbe fare nel Search all'inizio, quando popolo l'oggetto così è più veloce la visualizzazione
 
             if(this.castName.length == 0) {
                 //https://api.themoviedb.org/3/movie/550/credits?api_key=209546ea776ec96053d1a5aabf76772f
@@ -164,15 +164,13 @@ export default {
                     .then(res => {
                         this.genres = res.data.genres;
 
+                        // console.log(this.genres);
                         this.transformIdGenres();
 
                     })
                     .catch(err => console.log(err));
             }
         
-
-            // this.learnMoreClick = !this.learnMoreClick;
-
         },
 
         transformIdGenres() {
@@ -185,7 +183,8 @@ export default {
                     }
                 }
             }
-        }
+        },
+
 
     }
 }

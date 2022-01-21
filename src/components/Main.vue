@@ -18,6 +18,10 @@
                     :id="film.id"
                     :type="`movie`"
                     :filmGenres="film.genre_ids"
+
+                    :genreChoice="choice"
+
+
                 />
             </ul>
         </div>
@@ -42,6 +46,8 @@
                     :id="serie.id"
                     :type="`tv`"
                     :filmGenres="serie.genre_ids"
+
+                    :genreChoice="choice"
                 />
             </ul>
         </div>
@@ -66,6 +72,7 @@ export default {
     },
     props: {
         arrayFilms: Object,  //arrayFilms è un oggetto che contiene un array per i film e un array per le serie tv
+        choice: Number
     },
 
     data() {
