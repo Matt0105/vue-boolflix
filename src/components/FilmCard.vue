@@ -17,11 +17,40 @@
                 class="fa-solid fa-star rate"></i>
                 <!-- stella da inserire con npm  -->
             </li>
-            <li class="film-info"> <span class="label">Descrizione: </span> <p>{{overview}}</p></li>
 
-            <button @click="learnMore()">Scopri ></button>
+            <transition name="fade">
+                <li v-if="!learnMoreClick" class="film-info" key=1>
+                    <span class="label">Descrizione:</span>
+                    <p class="desc">{{overview}}</p>
+                </li>
+            </transition>
+
+            <transition name="fade">
+                <li v-if="learnMoreClick" class="film-info" key=2> 
+                    <span class="label">Cast: </span>
+                    <p 
+                        v-for="(actor, index) in castName"
+                        :key="index"
+                        >
+                        {{actor}}
+                    </p>
+                </li>
+            </transition>
+            <transition name="fade">
+            
+                <li v-if="learnMoreClick" class="film-info" key=2> 
+                    <span class="label">Generi Correlati: </span>
+                    <p 
+                        v-for="(genre, index) in filmGenres"
+                        :key="index"
+                        >
+                        {{genre}}
+                    </p>
+                </li>
+            </transition>
 
         </div>
+        <button @click="learnMore(), learnMoreClick = !learnMoreClick">Scopri di più ></button>
         
   </div>
 
@@ -39,7 +68,8 @@ export default {
             baseUrl: "https://api.themoviedb.org/3/", // [movie] or [tv] / [id] / credits ? apiKey   
             apiKey: "209546ea776ec96053d1a5aabf76772f",
             castName: [],
-            genres: []
+            genres: [],
+            learnMoreClick: false
         }
     },
     props: {
@@ -53,6 +83,7 @@ export default {
         type: String,
         filmGenres: Array
     },
+
     methods: {
         getImgUrl() {
             switch (this.language) {
@@ -100,6 +131,8 @@ export default {
             }
         },
 
+        
+
         getNewVote(value) {
             if(value != 0) {
                 return Math.ceil(((Math.ceil(value)*5)/10));
@@ -111,36 +144,47 @@ export default {
         },
 
         learnMore() {
-            //https://api.themoviedb.org/3/movie/550/credits?api_key=209546ea776ec96053d1a5aabf76772f
-            axios.get(`${this.baseUrl}${this.type}/${this.id}/credits?api_key=${this.apiKey}`)
-                .then(res => {
-                    const castList = res.data.cast;
 
-                    for(let i = 0; i < 5; i++) {
-                        this.castName.push(castList[i].name);
-                    }
+            if(this.castName.length == 0) {
+                //https://api.themoviedb.org/3/movie/550/credits?api_key=209546ea776ec96053d1a5aabf76772f
+                axios.get(`${this.baseUrl}${this.type}/${this.id}/credits?api_key=${this.apiKey}`)
+                    .then(res => {
+                        const castList = res.data.cast;
 
-                    // console.log(this.castName);         //potrebbero non esserci attori (cartoni animati)
-                })
-                .catch(err => console.log(err));
-
-
-            axios.get(`${this.baseUrl}/genre/${this.type}/list?api_key=${this.apiKey}`)
-                .then(res => {
-                    this.genres = res.data.genres;
-
-                    for(let y=0; y < this.filmGenres.length; y++) {             //ciclo annidato: controllo con indice y l'id corrente del film se è presente nella lista generi (i)
-
-                        for(let i=0; i < this.genres.length; i++) {
-                            if(this.genres[i].id == this.filmGenres[y]) {
-                                this.filmGenres[y] = this.genres[i].name;
-                            }
+                        for(let i = 0; i < 5; i++) {
+                            this.castName.push(castList[i].name);
                         }
+
+                        // console.log(this.castName);         //potrebbero non esserci attori (cartoni animati)
+                    })
+                    .catch(err => console.log(err));
+
+
+                axios.get(`${this.baseUrl}/genre/${this.type}/list?api_key=${this.apiKey}`)
+                    .then(res => {
+                        this.genres = res.data.genres;
+
+                        this.transformIdGenres();
+
+                    })
+                    .catch(err => console.log(err));
+            }
+        
+
+            // this.learnMoreClick = !this.learnMoreClick;
+
+        },
+
+        transformIdGenres() {
+
+            for(let y=0; y < this.filmGenres.length; y++) {             //ciclo annidato: controllo con indice y l'id corrente del film se è presente nella lista generi (i)
+
+                for(let i=0; i < this.genres.length; i++) {
+                    if(this.genres[i].id == this.filmGenres[y]) {
+                        this.filmGenres[y] = this.genres[i].name;
                     }
-
-                })
-                .catch(err => console.log(err));
-
+                }
+            }
         }
 
     }
@@ -148,6 +192,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../assets/scss/partials/_variables.scss";
 @import "../assets/scss/partials/_mixins.scss";
 
     .card-container {
@@ -156,6 +201,8 @@ export default {
         position: relative;
         overflow: hidden;
         transition: all 0.2s;
+
+
 
         &:hover {
             outline: 3px solid white;
@@ -173,6 +220,10 @@ export default {
         }
 
         &:hover .info-container {
+            opacity: 1;
+        }
+
+        &:hover button {
             opacity: 1;
         }
 
@@ -194,11 +245,14 @@ export default {
 
         li.film-info {
             margin: 0.4rem 0;
+            transition: all 1s;
 
-            p {
+
+            .desc {
                 height: 20vh;
                 overflow: scroll;
                 margin-top: 5px;
+
             }
             p::-webkit-scrollbar {
                 @include hideScroll;
@@ -211,8 +265,22 @@ export default {
             left: 0.7rem;
             color: white;
             opacity: 0;
+            overflow: hidden;
 
-            transition: all 1.3s;
+            transition: all 1s;
+
+            .fade-enter-active {
+                transition: opacity 1s;
+            }
+            .fade-leave-active {
+                transition: opacity 1s;
+                display: none;
+            }
+
+            .fade-enter,
+            .fade-leave-to {
+                    opacity: 0;
+            }
 
             .label {
                 text-transform: uppercase;
@@ -225,9 +293,24 @@ export default {
         }
 
         button {
-            position: relative;
-            background-color: white;
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border: none;
+            padding: 1rem;
+            font-family: 'Bebas Neue', cursive;
+            color: white;
+            background-color: $n-red;
+            opacity: 0;
+            transition: all 0.5s;
+            letter-spacing: 2px;
             z-index: 101;
+
+            &:hover {
+                cursor: pointer;
+                filter: brightness(200%);
+            }
         }
     }
 </style>
